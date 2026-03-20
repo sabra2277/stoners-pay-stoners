@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StonersPaysStoners — Made While Elevated</title>
+  <meta name="description" content="A marketplace for cannabis enthusiasts to buy and sell handmade goods, art, music, and food — all created under the influence." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0c1a0d;
+      --bg2:       #111f12;
+      --bg3:       #162018;
+      --green:     #5fba3e;
+      --green-lt:  #a8d96a;
+      --green-dim: #3d8228;
+      --text:      #d4e8c2;
+      --text-muted:#8ab874;
+      --text-dim:  #4f7a3a;
+      --border:    rgba(95,186,62,0.15);
+      --border-hover: rgba(95,186,62,0.45);
+      --card-bg:   rgba(255,255,255,0.03);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(12,26,13,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem; font-weight: 600; color: var(--green-lt);
+      letter-spacing: -0.02em; text-decoration: none;
+    }
+    .logo em { color: var(--green); font-style: italic; }
+    .nav-links {
+      display: flex; gap: 2.2rem; list-style: none;
+      font-size: 0.72rem; letter-spacing: 0.08em; color: var(--text-muted);
+    }
+    .nav-links a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--green-lt); }
+    .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
+    .btn-ghost {
+      background: transparent; color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.48rem 1.1rem;
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      cursor: pointer; border-radius: 2px; transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--green); color: var(--green-lt); }
+    .btn-solid {
+      background: var(--green); color: #0c1a0d; border: none;
+      padding: 0.48rem 1.25rem;
+      font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 500;
+      cursor: pointer; border-radius: 2px; transition: background 0.2s;
+    }
+    .btn-solid:hover { background: var(--green-lt); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: 5.5rem 3rem 4rem;
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 5rem; align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; letter-spacing: 0.14em; color: var(--green);
+      border: 1px solid rgba(95,186,62,0.35);
+      padding: 0.3rem 0.85rem; margin-bottom: 1.75rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-eyebrow::before { content: '✦'; font-size: 0.6rem; }
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 4.2rem; font-weight: 600;
+      line-height: 1.04; letter-spacing: -0.02em;
+      color: var(--text); margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero h1 em { color: var(--green); font-style: italic; }
+    .hero-desc {
+      font-size: 0.84rem; line-height: 1.85;
+      color: var(--text-muted); margin-bottom: 2.25rem;
+      max-width: 440px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .hero-btns .btn-lg {
+      padding: 0.85rem 2.2rem; font-size: 0.82rem;
+    }
+    .hero-btns .btn-ghost-lg {
+      background: transparent; color: var(--green-lt);
+      border: 1px solid rgba(168,217,106,0.35);
+      padding: 0.85rem 2rem; font-family: 'DM Mono', monospace;
+      font-size: 0.82rem; cursor: pointer; border-radius: 2px; transition: all 0.2s;
+    }
+    .hero-btns .btn-ghost-lg:hover { border-color: var(--green-lt); }
+
+    .hero-trust {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-top: 2.5rem; font-size: 0.68rem; color: var(--text-dim);
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+    .hero-trust span { display: flex; align-items: center; gap: 0.35rem; }
+    .hero-trust span::before { content: '✓'; color: var(--green); }
+
+    /* hero cards grid */
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem;
+      animation: fadeUp 0.7s 0.25s ease both;
+    }
+    .hc {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+      cursor: pointer;
+    }
+    .hc:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+    .hc:nth-child(odd)  { margin-top: 1.2rem; }
+    .hc:nth-child(even) { margin-top: -1.2rem; }
+    .hc-thumb {
+      height: 105px; display: flex; align-items: center;
+      justify-content: center; font-size: 2.4rem;
+    }
+    .hc-thumb.t1 { background: linear-gradient(140deg,#162a10,#203d18); }
+    .hc-thumb.t2 { background: linear-gradient(140deg,#1a231a,#27361e); }
+    .hc-thumb.t3 { background: linear-gradient(140deg,#0f1e1c,#182e26); }
+    .hc-thumb.t4 { background: linear-gradient(140deg,#1e1a0e,#2e2a18); }
+    .hc-body { padding: 0.7rem 0.85rem; }
+    .hc-name { font-size: 0.74rem; color: var(--text); margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hc-seller { font-size: 0.62rem; color: var(--green); margin-bottom: 0.45rem; }
+    .hc-price { font-size: 0.82rem; color: var(--green-lt); font-weight: 500; }
+
+    /* ── STATS BAND ── */
+    .stats-band {
+      position: relative; z-index: 1;
+      background: rgba(95,186,62,0.05);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2.2rem 3rem;
+    }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Fraunces', serif; font-size: 2.1rem;
+      font-weight: 600; color: var(--green-lt); letter-spacing: -0.03em;
+    }
+    .stat-label { font-size: 0.65rem; letter-spacing: 0.1em; color: var(--text-dim); margin-top: 0.2rem; }
+
+    /* ── SECTION WRAPPER ── */
+    .section { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 4.5rem 3rem; }
+    .section-label {
+      font-size: 0.67rem; letter-spacing: 0.14em; color: var(--green);
+      margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-label::before { content: '↳'; }
+
+    /* ── CATEGORIES ── */
+    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .cat-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 1.75rem 1.25rem;
+      text-align: center; cursor: pointer; transition: all 0.25s;
+    }
+    .cat-card:hover {
+      background: rgba(95,186,62,0.07);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+    .cat-icon { font-size: 2.2rem; display: block; margin-bottom: 0.9rem; }
+    .cat-name { font-size: 0.8rem; color: var(--text); margin-bottom: 0.35rem; }
+    .cat-count { font-size: 0.62rem; color: var(--green); }
+
+    /* ── LISTINGS ── */
+    .listings-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;
+    }
+    .see-all { font-size: 0.68rem; color: var(--green); text-decoration: underline; cursor: pointer; transition: color 0.2s; }
+    .see-all:hover { color: var(--green-lt); }
+    .listing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+    .listing-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden; cursor: pointer; transition: all 0.25s;
+    }
+    .listing-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+    .listing-thumb {
+      height: 150px; display: flex; align-items: center;
+      justify-content: center; font-size: 3rem;
+    }
+    .listing-body { padding: 1rem 1.1rem; }
+    .listing-title { font-size: 0.82rem; color: var(--text); margin-bottom: 0.3rem; }
+    .listing-by { font-size: 0.63rem; color: var(--green); margin-bottom: 0.65rem; }
+    .listing-footer { display: flex; justify-content: space-between; align-items: center; }
+    .listing-price { font-size: 0.95rem; color: var(--green-lt); font-weight: 500; }
+    .listing-tag {
+      font-size: 0.58rem; padding: 0.2rem 0.55rem;
+      background: rgba(95,186,62,0.12); color: var(--green);
+      border-radius: 2px; letter-spacing: 0.06em;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-bg {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .step { position: relative; }
+    .step-num {
+      font-family: 'Fraunces', serif; font-size: 3rem;
+      color: rgba(95,186,62,0.15); font-weight: 600;
+      line-height: 1; margin-bottom: 0.75rem;
+    }
+    .step-title { font-size: 0.92rem; color: var(--text); margin-bottom: 0.6rem; font-weight: 500; }
+    .step-desc { font-size: 0.77rem; color: var(--text-muted); line-height: 1.8; }
+
+    /* ── CTA BAND ── */
+    .cta-band {
+      position: relative; z-index: 1;
+      text-align: center; padding: 5.5rem 3rem;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(95,186,62,0.07), transparent);
+    }
+    .cta-band h2 {
+      font-family: 'Fraunces', serif; font-size: 2.8rem; font-weight: 600;
+      color: var(--text); margin-bottom: 1rem; letter-spacing: -0.02em;
+    }
+    .cta-band h2 em { color: var(--green); font-style: italic; }
+    .cta-band p {
+      font-size: 0.84rem; color: var(--text-muted);
+      line-height: 1.85; margin-bottom: 2.25rem; max-width: 480px; margin-left: auto; margin-right: auto;
+    }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; }
+    .cta-note { font-size: 0.65rem; color: var(--text-dim); margin-top: 1.2rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2.2rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: 0.67rem; color: var(--text-dim);
+    }
+    footer a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--green); }
+    .footer-links { display: flex; gap: 1.75rem; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 3rem; padding: 3.5rem 1.5rem 2.5rem; }
+      .hero h1 { font-size: 3rem; }
+      .hero-grid { max-width: 360px; }
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+      .listing-grid { grid-template-columns: 1fr 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .section { padding: 3rem 1.5rem; }
+      .stats-band { padding: 1.75rem 1.5rem; }
+      footer { padding: 1.75rem 1.5rem; flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 540px) {
+      .hero h1 { font-size: 2.4rem; }
+      .listing-grid { grid-template-columns: 1fr; }
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+      .cta-btns { flex-direction: column; align-items: center; }
+      .hero-btns { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="logo" href="#">stoners<em>pays</em>stoners</a>
+    <ul class="nav-links">
+      <li><a href="#categories">browse</a></li>
+      <li><a href="#how">how it works</a></li>
+      <li><a href="#sell">sell</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn-ghost">sign in</button>
+      <button class="btn-solid">start selling</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="hero-eyebrow">made while elevated</div>
+      <h1>Art made high.<br>Sold <em>right here.</em></h1>
+      <p class="hero-desc">
+        The marketplace for cannabis enthusiasts to buy &amp; sell handmade goods, original art, music, and food — all created in your most inspired moments.
+      </p>
+      <div class="hero-btns">
+        <button class="btn-solid btn-lg" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">explore the shop</button>
+        <button class="btn-ghost-lg" onclick="document.getElementById('sell').scrollIntoView({behavior:'smooth'})">list your work →</button>
+      </div>
+      <div class="hero-trust">
+        <span>free to list</span>
+        <span>92% payout</span>
+        <span>4,200+ creators</span>
+      </div>
+    </div>
+    <div class="hero-grid">
+      <div class="hc">
+        <div class="hc-thumb t1">🎨</div>
+        <div class="hc-body">
+          <div class="hc-name">Cosmic Spiral No. 7</div>
+          <div class="hc-seller">by haze_artist</div>
+          <div class="hc-price">$48</div>
+        </div>
+      </div>
+      <div class="hc">
+        <div class="hc-thumb t2">🧶</div>
+        <div class="hc-body">
+          <div class="hc-name">Macramé Moon Wall</div>
+          <div class="hc-seller">by knotted.up</div>
+          <div class="hc-price">$72</div>
+        </div>
+      </div>
+      <div class="hc">
+        <div class="hc-thumb t3">🍪</div>
+        <div class="hc-body">
+          <div class="hc-name">Midnight Brownie Kit</div>
+          <div class="hc-seller">by baked.goods</div>
+          <div class="hc-price">$22</div>
+        </div>
+      </div>
+      <div class="hc">
+        <div class="hc-thumb t4">🎵</div>
+        <div class="hc-body">
+          <div class="hc-name">Lo-Fi Chill Pack</div>
+          <div class="hc-seller">by cloudbeatco</div>
+          <div class="hc-price">$15</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-band">
+    <div class="stats-inner">
+      <div class="stat">
+        <div class="stat-num">4,200+</div>
+        <div class="stat-label">active creators</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">18,000+</div>
+        <div class="stat-label">listings</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">$2.1M</div>
+        <div class="stat-label">paid to creators</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">420</div>
+        <div class="stat-label">new listings today</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section class="section" id="categories">
+    <div class="section-label">browse by category</div>
+    <div class="cat-grid">
+      <div class="cat-card">
+        <span class="cat-icon">🎨</span>
+        <div class="cat-name">Art &amp; Illustration</div>
+        <div class="cat-count">3,842 listings</div>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">✂️</span>
+        <div class="cat-name">Crafts &amp; Handmade</div>
+        <div class="cat-count">5,109 listings</div>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">🎵</span>
+        <div class="cat-name">Music &amp; Audio</div>
+        <div class="cat-count">2,261 listings</div>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">🍽️</span>
+        <div class="cat-name">Food &amp; Recipes</div>
+        <div class="cat-count">1,988 listings</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTINGS -->
+  <section class="section" id="listings" style="padding-top:0;">
+    <div class="listings-header">
+      <div class="section-label" style="margin-bottom:0;">trending this week</div>
+      <span class="see-all">see all →</span>
+    </div>
+    <div class="listing-grid">
+      <div class="listing-card">
+        <div class="listing-thumb" style="background:linear-gradient(140deg,#162a10,#243d18);">🖼️</div>
+        <div class="listing-body">
+          <div class="listing-title">Purple Haze on Canvas</div>
+          <div class="listing-by">by tokeandpaint</div>
+          <div class="listing-footer">
+            <span class="listing-price">$95</span>
+            <span class="listing-tag">art</span>
+          </div>
+        </div>
+      </div>
+      <div class="listing-card">
+        <div class="listing-thumb" style="background:linear-gradient(140deg,#1a221a,#28361e);">🕯️</div>
+        <div class="listing-body">
+          <div class="listing-title">Hand-poured Sativa Candle</div>
+          <div class="listing-by">by mellowwax</div>
+          <div class="listing-footer">
+            <span class="listing-price">$34</span>
+            <span class="listing-tag">craft</span>
+          </div>
+        </div>
+      </div>
+      <div class="listing-card">
+        <div class="listing-thumb" style="background:linear-gradient(140deg,#101e1c,#182e26);">🎧</div>
+        <div class="listing-body">
+          <div class="listing-title">Dusk Session Vol. 3</div>
+          <div class="listing-by">by slow.wave</div>
+          <div class="listing-footer">
+            <span class="listing-price">$8</span>
+            <span class="listing-tag">music</span>
+          </div>
+        </div>
+      </div>
+      <div class="listing-card">
+        <div class="listing-thumb" style="background:linear-gradient(140deg,#201a0e,#332a18);">🫙</div>
+        <div class="listing-body">
+          <div class="listing-title">Hot Honey Infusion Recipe</div>
+          <div class="listing-by">by elevatedchef</div>
+          <div class="listing-footer">
+            <span class="listing-price">$12</span>
+            <span class="listing-tag">food</span>
+          </div>
+        </div>
+      </div>
+      <div class="listing-card">
+        <div class="listing-thumb" style="background:linear-gradient(140deg,#1a1a2e,#222840);">🌀</div>
+        <div class="listing-body">
+          <div class="listing-title">Geometric Tapestry, 3×5ft</div>
+          <div class="listing-by">by third.eye.looms</div>
+          <div class="listing-footer">
+            <span class="listing-price">$140</span>
+            <span class="listing-tag">craft</span>
+          </div>
+        </div>
+      </div>
+      <div class="listing-card">
+        <div class="listing-thumb" style="background:linear-gradient(140deg,#261a10,#3a2818);">📓</div>
+        <div class="listing-body">
+          <div class="listing-title">Stoned Poetry Zine #4</div>
+          <div class="listing-by">by riffraff.press</div>
+          <div class="listing-footer">
+            <span class="listing-price">$9</span>
+            <span class="listing-tag">art</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-bg">
+    <section class="section" id="how">
+      <div class="section-label">how it works</div>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-title">Create your free shop</div>
+          <div class="step-desc">Sign up in minutes. Add your name, bio, and a photo. Your shop is live instantly — no subscription, no setup fee.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-title">List what you make</div>
+          <div class="step-desc">Upload photos, set your price, write a description. Art, crafts, music downloads, recipe PDFs — if you made it, you can sell it.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-title">Get paid, keep 92%</div>
+          <div class="step-desc">We take a small 8% commission only when you sell. Payments hit your account within 2 business days. No hidden fees.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SELLER CTA -->
+  <section class="cta-band" id="sell">
+    <h2>Ready to sell your<br><em>elevated creations?</em></h2>
+    <p>Join thousands of creators sharing what they make in their most inspired moments. List for free. Keep 92% of every sale.</p>
+    <div class="cta-btns">
+      <button class="btn-solid btn-lg">create your shop</button>
+      <button class="btn-ghost-lg">see how it works</button>
+    </div>
+    <p class="cta-note">free to join · no subscription · paid when you sell</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo" style="font-size:0.9rem;">stoners<em style="color:var(--green);font-style:italic;">pays</em>stoners</div>
+    <div class="footer-links">
+      <a href="#">about</a>
+      <a href="#">terms</a>
+      <a href="#">privacy</a>
+      <a href="#">support</a>
+      <a href="#">blog</a>
+    </div>
+    <div>© 2025 stonerspaystoners.com</div>
+  </footer>
+
+</body>
+</html>
